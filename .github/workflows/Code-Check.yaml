@@ -1,0 +1,31 @@
+# Copyright (c) 2025, guimochila.com. Continuous Learning.
+
+name: Code Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.go"
+
+jobs:
+  required:
+    name: Validate Code
+    needs: [golangci-lint]
+    runs-on: ubuntu-latest
+    steps: [run: echo OK]
+  golangci-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Go 
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+      - name: golangci-lint 
+        uses: golangci/golangci-lint-action@v6
+        with:
+          install-mode: "binary"
+          version: latest
+          only-new-issues: true
