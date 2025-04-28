@@ -1,0 +1,18 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  BUILD_DIR: ./bin/
+
+tasks:
+  build:
+    desc: Build Social-go
+    cmds:
+      - go build -o {{.BUILD_DIR}} ./...
+  dev:
+    desc: Start Development mode
+    env:
+      PORT: 8080
+    cmds:
+      - go tool air 

@@ -1,99 +1,138 @@
 # Copyright (c) 2025, guimochila.com. Continuous Learning.
 
-severity:
-  default-severity: error
-
-output:
-  formats:
-    - format: sarif
-      path: golangci-lint.sarif
-    - format: colored-line-number
-      path: stderr
-  print-issued-lines: true
-  print-linter-name: true
-  sort-results: true
-
-linters:
-  presets:
-    - bugs
-    - comment
-    - complexity
-    - error
-    - format
-    - import
-    - metalinter
-    - module
-    - performance
-    - sql
-    - style
-    - test
-    - unused
-  # Run only fast linters from enabled linters set (first run won't be fast)
-  fast: true
-  # enable-all: false
-  # disable-all: false
-
-  # https://golangci-lint.run/usage/linters/#enabled-by-default
-  enable:
-    - gofumpt
-    - goheader
-    - revive
-    - gosec
-    - errname
-
-  # https://golangci-lint.run/usage/linters/#disabled-by-default
-  disable:
-    - depguard
-    - gomoddirectives
-    - tagliatelle
-    - testpackage
-
-linters-settings:
-  dupl:
-    # tokens count to trigger issue, 150 by default
-    threshold: 200
-  godox:
-    keywords: ['BUG', 'FIXME']
-  gofumpt:
-    module-path: github.com/guimochila/social
-  goheader:
-    values:
-      const:
-        COMPANY: guimochila.com
-    template: |-
-      Copyright (c) {{ YEAR-2024- }}, {{ COMPANY }}. Continous Learning.
-  gosec:
-    exclude-generated: true
-  funlen:
-    ignore-comments: true
-    # Does not support severity setting
-    lines: -1
-    statements: 50
-  lll:
-    line-length: 120
-    tab-width: 2
-  revive:
-    ignore-generated-header: true
-    severity: error
-    confidence: 0.8
-    rules:
-      - name: var-naming
-        severity: warning
-        disabled: false
-        exclude: ['']
-        arguments:
-          - ['ID'] # AllowList
-          - ['VM'] # DenyList
-          - - upperCaseConst: true # Extra parameter (upperCaseConst|skipPackageNameChecks)
-
+version: '2'
 issues:
-  exclude-use-default: true
-  exclude-case-sensitive: false
   new: false
   fix: false
-  exclude-dirs:
-    - 'deployments'
-  exclude-rules:
-    - path: _test.go
-      linters:
-        - funlen
+severity:
+  default: error
+output:
+  formats:
+    text:
+      path: stderr
+      print-linter-name: true
+      print-issued-lines: true
+    sarif:
+      path: golangci-lint.sarif
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+  settings:
+    gofumpt:
+      module-path: github.com/guimochila/social-go
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+linters:
+  enable:
+    - asciicheck
+    - bidichk
+    - copyloopvar
+    - cyclop
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
+    - errname
+    - funlen
+    - gocheckcompilerdirectives
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocyclo
+    - godot
+    - godox
+    - goheader
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - grouper
+    - inamedparam
+    - interfacebloat
+    - lll
+    - maintidx
+    - misspell
+    - mnd
+    - nakedret
+    - nestif
+    - nlreturn
+    - nolintlint
+    - nosprintfhostport
+    - prealloc
+    - predeclared
+    - promlinter
+    - revive
+    - tagalign
+    - testableexamples
+    - usestdlibvars
+    - whitespace
+    - wsl
+  disable:
+    - cyclop
+    - depguard
+    - errcheck
+    - gomoddirectives
+    - govet
+    - staticcheck
+    - tagliatelle
+    - testpackage
+    - unused
+  settings:
+    dupl:
+      threshold: 200
+    funlen:
+      lines: -1
+      statements: 50
+      ignore-comments: true
+    godox:
+      keywords:
+        - BUG
+        - FIXME
+    goheader:
+      template: Copyright (c) {{ YEAR }}. guimochila.com. Continuous Learning.
+    lll:
+      line-length: 120
+      tab-width: 2
+    revive:
+      confidence: 0.8
+      severity: error
+      rules:
+        - name: var-naming
+          arguments:
+            - - ID
+            - - VM
+            - - upperCaseConst: true
+          severity: warning
+          disabled: false
+          exclude:
+            - ''
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - dupl
+          - errcheck
+          - funlen
+          - gocyclo
+          - gosec
+          - lll
+        path: _test\.go
+      - linters:
+          - lll
+        path: config/.*\.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

@@ -1,3 +1,5 @@
+// Copyright (c) 2025. guimochila.com. Continuous Learning.
+
 package main
 
 import "net/http"

@@ -1,12 +1,19 @@
 // Copyright (c) 2025. guimochila.com. Continuous Learning.
+
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/guimochila/social/internal/config"
+)
 
 func main() {
-	cfg := config{
-		addr: ":8080",
+	var cfg config.Config
+	if err := config.FromEnv(&cfg); err != nil {
+		log.Fatal("error loading configuration")
 	}
+
 	app := &application{
 		config: cfg,
 	}
