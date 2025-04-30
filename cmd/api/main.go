@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/guimochila/social/internal/config"
+	"github.com/guimochila/social/internal/store"
 )
 
 func main() {
@@ -14,8 +15,11 @@ func main() {
 		log.Fatal("error loading configuration")
 	}
 
+	store := store.NewStorage(nil)
+
 	app := &application{
 		config: cfg,
+		store:  store,
 	}
 
 	mux := app.mount()

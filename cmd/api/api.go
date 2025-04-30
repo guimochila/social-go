@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/guimochila/social/internal/config"
+	"github.com/guimochila/social/internal/store"
 )
 
 const (
@@ -19,6 +20,7 @@ const (
 
 type application struct {
 	config config.Config
+	store  store.Storage
 }
 
 func (app *application) mount() http.Handler {
