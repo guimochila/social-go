@@ -21,6 +21,7 @@ const (
 type application struct {
 	config config.Config
 	store  store.Storage
+	db     config.DBConfig
 }
 
 func (app *application) mount() http.Handler {
